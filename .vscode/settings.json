@@ -9,6 +9,7 @@
         "stacktrace": "cpp",
         "regex": "cpp",
         "valarray": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "iostream": "cpp"
     }
 }
