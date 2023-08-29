@@ -3,19 +3,20 @@ using namespace std;
 
 int* NEXT(string p){
     int *next = new int[p.length()];
-    next[0] = -1;
-    int j = 0;
-    int k = -1;
+    next[0] = 0;
+    int j = 1;
+    int k = 0;
 
-    while(j < p.length()-1){
-        if(k == -1 || p[j] == p[k]){
-            if(p[++j] == p[++k]){
-                next[j] = next[k]+1;
-            }else{
-                next[j] = k;
-            }
+    while(j < p.length()){
+        if(p[j] == p[k]){
+            k++;
+            next[j] = k;
+            j++;
+        }else if(k != 0){
+            k = next[k-1];
         }else{
-            k = next[k];
+            j++;
+            next[j] = k;
         }
     }
     return next;
@@ -27,7 +28,7 @@ int KMP(string s, string p){
     int j = 0;
     int *next = NEXT(p);
     while(i < s.length() && j < p.length()){
-        if(j == -1 || s[i] == p[j]){
+        if(s[i] == p[j]){
             i++;
             j++;
         }else{
