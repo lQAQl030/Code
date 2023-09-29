@@ -13,19 +13,15 @@ class Solution {
 public:
     int flow = 0, i = 0;
 
-    TreeNode* build(vector<int>& preorder, vector<int>& inorder, int val){
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder, int val = INT_MAX) {
         if(flow >= preorder.size()) return NULL;
         if(inorder[i] == val){
             i++;
             return NULL;
         }
         TreeNode *head = new TreeNode(preorder[flow++]);
-        head->left = build(preorder, inorder, head->val);
-        head->right = build(preorder, inorder, val);
+        head->left = buildTree(preorder, inorder, head->val);
+        head->right = buildTree(preorder, inorder, val);
         return head;
-    }
-
-    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        return build(preorder, inorder, INT_MAX);
     }
 };

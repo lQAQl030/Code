@@ -14,5 +14,6 @@
         "ostream": "cpp",
         "tuple": "cpp",
         "complex": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
