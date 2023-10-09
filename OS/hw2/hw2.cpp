@@ -4,15 +4,20 @@
 #include <unistd.h>
 #include <poll.h>
 #include <sys/eventfd.h>
+
 int main()
 {
     int color_index;
     bool running = true;
     int h, w, ch, y, x, ny, nx;
 
+    struct pollfd poll_fds[1];
+    poll_fds[0].fd = STDIN_FILENO;
+    poll_fds[0].events = POLLIN;
+
     time_t t;
     char s[64];
-    const char* space = " ";
+    const char* space = "                                         ";
     int len = strlen(space);
 
     initscr();
@@ -31,20 +36,18 @@ int main()
     init_pair(7, COLOR_WHITE, COLOR_BLACK);
     color_index = 0;
 
+
     nx=ny=x=y=0;
     
     while (running) {
 
-
         wmove(stdscr, y, x);
         wprintw (stdscr, "%.*s", len, space);
-
 
         t = time(0);
         strftime(s, sizeof(s), "%c", localtime(&t));
         len = strlen(s);
         
-
         getmaxyx(stdscr,h,w);
         if (ny<0) ny = 0;
         if (ny>=h) ny = h-1;
@@ -58,33 +61,33 @@ int main()
         wrefresh(stdscr);
         attroff(COLOR_PAIR(color_index+1) );
 
-
         color_index = (color_index+1)%7;
-
 
         y = ny;
         x = nx;
+        if ( poll(poll_fds, 1, 1000) < 0 ) {
+            perror("Error \n");
+            continue;
+        }
 
-
-        ch = getch();
-
-
-        switch(ch) {
-            case KEY_UP: ny = y-1;
+        if (poll_fds[0].revents & POLLIN) {
+            ch = getch();
+            switch(ch) {
+                case KEY_UP: ny = y-1;
+                    break;
+                case KEY_DOWN: ny = y+1;
+                    break;
+                case KEY_LEFT: nx = x-1;
+                    break;
+                case KEY_RIGHT: nx = x+1;
+                    break;
+                case 'q':
+                case 'Q':
+                    running = false;
                 break;
-            case KEY_DOWN: ny = y+1;
-                break;
-            case KEY_LEFT: nx = x-1;
-                break;
-            case KEY_RIGHT: nx = x+1;
-                break;
-            case 'q':
-            case 'Q':
-                running = false;
-            break;
-
-            
-            default: ;
+                
+                default: ;
+            }
         }
     }
 
