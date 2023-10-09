@@ -17,8 +17,9 @@ int main()
 
     time_t t;
     char s[64];
-    const char* space = "                                         ";
-    int len = strlen(space);
+    int len;
+    // const char* space = " ";
+    // int len = strlen(space);
 
     initscr();
     raw(); //enter raw mode
@@ -40,9 +41,9 @@ int main()
     nx=ny=x=y=0;
     
     while (running) {
-
-        wmove(stdscr, y, x);
-        wprintw (stdscr, "%.*s", len, space);
+        clear();
+        // wmove(stdscr, y, x);
+        // wprintw (stdscr, "%.*s", len, space);
 
         t = time(0);
         strftime(s, sizeof(s), "%c", localtime(&t));
