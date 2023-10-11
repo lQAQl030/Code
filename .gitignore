@@ -1,6 +1,12 @@
 test.cpp
 test.exe
 test
+test2.cpp
+test2.exe
+test2
+rand.cpp
+rand.exe
 in.txt
+in2.txt
 out.txt
 .vscode/
