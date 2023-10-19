@@ -1,22 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>hw1</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Helvetica", "Arial","LiHei Pro","黑體-繁","微軟正黑體", sans-serif;
             background-color: #f2f2f2;
             margin: 0;
             padding: 0;
         }
 
         header {
-            background-color: #333;
-            color: #fff;
+            transition: background-color 0.5s;
+            background-color: #333333;
+            color: #ffffff;
             text-align: center;
             padding: 20px;
+        }
+
+        header:hover {
+            animation: changeColor 2s infinite;
         }
 
         h1 {
@@ -24,7 +29,7 @@
         }
 
         article {
-            background-color: #fff;
+            background-color: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             padding: 20px;
             margin: 20px;
@@ -35,12 +40,28 @@
             font-size: 1.2em;
             line-height: 1.5;
         }
+
+        article > p:hover {
+            transition: background-color 0.3s;
+            background-color: #767676;
+            color: #ffffff;
+            font-style: italic;
+        }
+
+        @keyframes changeColor {
+            0% { background-color: #3498db; }
+            25% { background-color: #e74c3c; }
+            50% { background-color: #2ecc71; }
+            75% { background-color: #f1c40f; }
+            100% { background-color: #3498db; }
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>赤壁賦</h1>
         <p>宋 蘇軾</p>
+        <p>110704010 周世恩 HW1</p>
     </header>
     <article>
         <p>&emsp;壬戌之秋，七月既望，蘇子與客泛舟遊於赤壁之下。清風徐來，水波不興。舉酒屬客
