@@ -15,7 +15,7 @@ int main(void) {
     } 
     else if (c_pid > 0) {
         sleep(1);
-        /*-----------------------------------------------------*/
+        wait(&status);
         //Parent process' variable
         x -= 5;
         printf("Parent has x = %d\n", x);

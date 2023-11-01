@@ -7,7 +7,7 @@
 jmp_buf jump_buffer;
 int jump_case;
 void handler(int signum) {
-    /*-------------------------------------*/
+    longjmp(jump_buffer, jump_case);
 }
 
 int main(void)
@@ -16,16 +16,17 @@ int main(void)
     ppid = getpid();
     printf("Input jump_case : ");
     scanf("%d",&jump_case);
-    /*-------------------------------------*/
-    if(/*-------------------------------------*/)
+    signal(SIGINT, handler);
+    cpid = fork();
+    if(cpid < 0)
     {
         perror("Fail to fork\n");
         exit(1);
     }
     else if(cpid == 0)
     { 
-        int jp = /*-------------------------------------*/
-        if ( /*-------------------------------------*/) {
+        int jp = setjmp(jump_buffer);
+        if (jp == 0) {
             while(1){
                 printf("Child is waiting for signal \n");
                 
@@ -46,8 +47,8 @@ int main(void)
 
     else
     {   
-        int jp = /*-------------------------------------*/
-        if ( /*-------------------------------------*/) {
+        int jp = setjmp(jump_buffer);
+        if (jp == 0) {
             while(1){
                 printf("Parent is waiting for signal \n");          
                 sleep(1);
@@ -62,7 +63,7 @@ int main(void)
                 sleep(2);
                 printf("\nGoing to kill child\n");
                 sleep(3);
-                if(/*-------------------------------------*/)
+                if(kill(cpid, SIGKILL))
                 {
                     perror("Fail to send signal\n");
                     exit(1);
