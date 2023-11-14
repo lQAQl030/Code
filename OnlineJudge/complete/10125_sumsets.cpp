@@ -1,44 +1,35 @@
-#include <iostream>
-#include<stdlib.h>
-#include<limits.h>
-#include<vector>
-#include<algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-int main(){
-  
-  int n = 0;
-  while(cin >> n && n != 0){
-    vector<int> array;
-  int number = 0;
-  int target = INT_MAX;
-    for(int i = 0 ; i < n ; i++){
-      cin >> number;
-      array.push_back(number);
-    }
-
-    sort(array.begin() , array.end());
-
-    for(int i = array.size()-1 ; i >= 0 ; i--){
-      for(int j = 0 ; j < array.size() ; j++){
-        for(int k = j+1 ; k < array.size() ; k++){
-          for(int l = k+1 ; l < array.size() ; l++){
-            if(array[j]+array[k]+ array[l] == array[i] && j != i && k != i && l != i){
-              target = array[i];
-              goto end;
-            }
-          }
+int main() {
+    // freopen("out.txt", "w", stdout);
+    // freopen("in.txt", "r", stdin);
+    int n;
+    while(cin >> n && n != 0){
+        vector<int> nums;
+        int num;
+        for(int i = 0 ; i < n ; i++){
+            cin >> num;
+            nums.push_back(num);
         }
-      }
-    }
+        sort(nums.begin(), nums.end());
 
-    end:
-      if(target == INT_MAX){
+        for(int d = n-1 ; d >= 0 ; d--)
+        for(int a = 0 ; a < n ; a++){
+            for(int b = a+1 ; b < n ; b++){
+                for(int c = b+1 ; c < n ; c++){
+                    if(nums[a] + nums[b] + nums[c] == nums[d] && a != d && b != d && c != d){
+                        cout << nums[d] << endl;
+                        goto exit;
+                    }
+                }
+            }
+        }
         cout << "no solution" << endl;
-      }else{
-        cout << target << endl;
-      }
-  }
+        exit:
+            continue;
+    }
+    
 
-  return 0;
+    return 0;
 }
