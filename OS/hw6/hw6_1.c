@@ -5,7 +5,7 @@
 
 int THREAD_MAX = 2; // Split two threads
 int thread = 0; // current thread
-int size = 0; // size of input integet array
+int size = 0; // size of input integer array
 int arr[10001]; // array to store input testcase
 
 // Regular merge
