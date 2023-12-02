@@ -30,6 +30,9 @@ void merge(int low, int mid, int high){
     while(i < n_left) arr[idx++] = left[i++];
     while(j < n_right) arr[idx++] = right[j++];
 
+    free(left);
+    free(right);
+    
     return;
 }
 
