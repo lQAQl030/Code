@@ -53,8 +53,12 @@ void* merge_sort_thread(void* data){
     int now_thread = thread++;
 
     // Determine the low and high of first/second half array by now_thread
-    int low = now_thread * (size / 2);
-    int high = (now_thread + 1) * (size / 2) - 1;
+    int low, high;
+    if(now_thread == 0){
+        low = 0; high = size / 2;
+    }else{
+        low = size / 2 + 1; high = size - 1;
+    }
 
     // Regular merge sort
     merge_sort(low, high);
