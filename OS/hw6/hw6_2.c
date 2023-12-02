@@ -10,6 +10,8 @@ int *vector1, *vector2;
 
 int inner_product = 0;
 
+pthread_mutex_t mutex;
+
 // Structure to hold thread-specific data
 typedef struct {
     unsigned int thread_id;
@@ -22,7 +24,9 @@ void* calculate_inner_product(void* arg) {
     ThreadData* data = (ThreadData*)arg;
 
     for (int i = data->start; i < data->end; i++) {
+        pthread_mutex_lock(&mutex);
         inner_product += vector1[i] * vector2[i];
+        pthread_mutex_unlock(&mutex);
     }
 
     pthread_exit(NULL);

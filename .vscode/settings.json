@@ -9,6 +9,7 @@
         "limits": "cpp",
         "valarray": "cpp",
         "ostream": "cpp",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "pthread.h": "c"
     }
 }
