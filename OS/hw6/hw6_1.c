@@ -54,12 +54,17 @@ void* merge_sort_thread(void* data){
 
     // Determine the low and high of first/second half array by now_thread
     int low, high;
-    if(now_thread == 0){
-        low = 0; high = size / 2;
+    if(size % 2 == 0){
+        low = now_thread * (size / 2);
+        high = (now_thread + 1) * (size / 2) - 1;
     }else{
-        low = size / 2 + 1; high = size - 1;
+        if(now_thread == 0){
+            low = 0; high = size / 2;
+        }else{
+            low = size / 2 + 1; high = size - 1;
+        }
     }
-
+    
     // Regular merge sort
     merge_sort(low, high);
 
