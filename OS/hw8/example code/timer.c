@@ -30,12 +30,16 @@ int main(int argc, char *argv[]){
     sigemptyset(&sa.sa_mask);
     if (sigaction(SIGALRM, &sa, NULL) == -1)
         perror("sigaction");
-/* ToDo:
+
+    /* ToDo: */
     struct sigevent sev;
-    ...
-*/
+    sev.sigev_notify = SIGEV_SIGNAL;
+    sev.sigev_signo = 64;
+    if (sigaction(64, &sa, NULL) == -1)
+        perror("sigaction");
+
     itimerspecFromStr(argv[1], &ts);
-    if (timer_create(CLOCK_REALTIME, NULL, &tidlist[0]) == -1)
+    if (timer_create(CLOCK_REALTIME, &sev, &tidlist[0]) == -1)
     	perror("timer_create");
     printf("Timer ID: %ld (%s)\n", (long) tidlist[0], argv[1]);
     
