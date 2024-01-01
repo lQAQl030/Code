@@ -12,6 +12,8 @@
         "stdio.h": "c",
         "pthread.h": "c",
         "span": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "initializer_list": "cpp",
+        "ranges": "cpp"
     }
 }
