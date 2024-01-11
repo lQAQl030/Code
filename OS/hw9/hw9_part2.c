@@ -17,15 +17,13 @@ int main(int argc, char *argv[]) {
     /*To Do 
     Open the specified directory from command line argument 
     and check if the directory was opened successfully
-
-    const char *directoryPath = ......
-    ...
-    ...
-    if (...) {
+    */
+    const char* directoryPath = argv[1];
+    DIR* sourceDir = opendir(directoryPath);
+    if(sourceDir == NULL){
         perror("Error opening directory");
         return 1;
     }
-    */
     
 
     struct dirent *entry;
@@ -36,7 +34,7 @@ int main(int argc, char *argv[]) {
     printf("Inspecting files in directory: %s\n", directoryPath);
 
     // Loop through each entry in the directory
-    while (/*To Do */) {
+    while ((entry = readdir(sourceDir)) != NULL) {
     // Loop condition checks if there is another directory entry
         
         char filePath[256];
@@ -47,19 +45,32 @@ int main(int argc, char *argv[]) {
 
         hint: The file information should be stored in the statBuffer.
         */
+        int dirStat = stat(filePath, &statBuffer);
+        if(dirStat == -1){
+            perror("Something wrong when getting directory status");
+            return -1;
+        }
         
 
         /*To Do 
         Print details for each file and directory 
         (Name, Size (in bytes), Type (Regular File or Directory), Modification time)
         
-        printf("Name: %-20s ", entry->d_name);
-        ...
-        ...
-        ...
-
         hint:You can use the functions mentioned in description to determine if the entry is a regular file or a directory
         */
+        totalSize = statBuffer.st_size;
+        char* type = "";
+        if(S_ISREG(statBuffer.st_mode)) type = "Regular File";
+        else if(S_ISDIR(statBuffer.st_mode)) type = "Directory";
+        else type = "Unknown Type";
+        char* timeStr = "";
+        timeStr = ctime(&statBuffer.st_ctime);
+        if(!timeStr){
+            perror("Time string error");
+            return 1;
+        }
+        printf("Name: %-20s Size: %-10d Type: %-15s Modified: %-30s\n", entry->d_name, totalSize, type, timeStr);
+
         
     }
 
@@ -67,6 +78,7 @@ int main(int argc, char *argv[]) {
     /* To Do
     Close the directory
     */
+    closedir(sourceDir);
     
     return 0;
 }
