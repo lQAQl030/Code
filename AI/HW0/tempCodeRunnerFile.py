@@ -1,1 +1,0 @@
-interpolation=cv2.INTER_AREA
