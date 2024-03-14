@@ -196,7 +196,7 @@ bitset<64> desEncrypt(bitset<64> plaintext, bitset<64> key){
     bitset<32> left, right, temp;
     // cout << permuted_text << endl;//test
     for(int i = 0 ; i < 32 ; i++) right[i] = permuted_text[i];
-    for(int i = 32 ; i < 64 ; i++) left[i] = permuted_text[i];
+    for(int i = 32 ; i < 64 ; i++) left[i-32] = permuted_text[i];
     // cout << hex << uppercase << left << " " << right << endl;//test
     
     for(int round = 0 ; round < 16 ; round++){
