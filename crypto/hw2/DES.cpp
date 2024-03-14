@@ -235,7 +235,7 @@ bitset<64> desEncrypt(bitset<64> plaintext, bitset<64> key){
 }
 
 string stob(string s){
-    string b_string;
+    string b_string = "";
     for(int i = 0 ; i < s.size() ; i++){
         b_string += bitset<8>(s.c_str()[i]).to_string();
     }
@@ -252,8 +252,8 @@ bitset<64> htob(string s){
 }
 
 int main(){
-    // freopen("in.txt", "r", stdin);
-    // freopen("out.txt", "w", stdout);
+    freopen("in.txt", "r", stdin);
+    freopen("out.txt", "w", stdout);
 
     string input_str;
     for(int i = 0 ; i < 5 ; i++){
