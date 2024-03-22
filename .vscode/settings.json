@@ -16,6 +16,8 @@
         "initializer_list": "cpp",
         "ranges": "cpp",
         "string": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "deque": "cpp",
+        "vector": "cpp"
     }
 }
