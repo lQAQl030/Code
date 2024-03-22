@@ -136,15 +136,22 @@ bitset<56> PC1(bitset<64> key){
     return permuted_key;
 }
 
-void keyShift(bitset<56> &permuted_key, int shift){
-    // cout << hex << uppercase << permuted_key << endl;//test
+void keyShift(bitset<56> &permuted_key, int shift, int direction){
+    // cout << "in : " << permuted_key << endl;//test
     bitset<28> left, right;
     for(int i = 0 ; i < 28 ; i++){
         left[i] = permuted_key[i];
         right[i] = permuted_key[i + 28];
     }
-    left = left << shift | left >> (28-shift);
-    right = right << shift | right >> (28-shift);
+
+    if(direction == 0){
+        left = left << shift | left >> (28-shift);
+        right = right << shift | right >> (28-shift);
+    }else{
+        left = left >> shift | left << (28-shift);
+        right = right >> shift | right << (28-shift);
+    }
+
     for(int i = 0 ; i < 28 ; i++){
         permuted_key[i] = left[i];
         permuted_key[i + 28] = right[i];
@@ -204,7 +211,7 @@ bitset<64> desEncrypt(bitset<64> plaintext, bitset<64> key){
 
         bitset<48> expanded = expansionPbox(right);
 
-        keyShift(permuted_key, shift_bit[round]);
+        keyShift(permuted_key, shift_bit[round], 0);
         bitset<48> subkey = PC2(permuted_key);
         // cout << hex << uppercase << subkey.to_ullong() << endl;//test
 
@@ -235,7 +242,48 @@ bitset<64> desEncrypt(bitset<64> plaintext, bitset<64> key){
 }
 
 bitset<64> desDecrypt(bitset<64> ciphertext, bitset<64> key){
+    bitset<64> permuted_text = initialPermutation(ciphertext);
+    bitset<56> permuted_key = PC1(key);
+
+    bitset<32> left, right, temp;
+    // cout << permuted_text << endl;//test
+    for(int i = 0 ; i < 32 ; i++) right[i] = permuted_text[i];
+    for(int i = 32 ; i < 64 ; i++) left[i-32] = permuted_text[i];
+    // cout << hex << uppercase << left << " " << right << endl;//test
     
+    for(int round = 0 ; round < 16 ; round++){
+        temp = right;
+
+        bitset<48> expanded = expansionPbox(right);
+
+        bitset<48> subkey = PC2(permuted_key);
+        keyShift(permuted_key, shift_bit[15 - round], 1);
+        // cout << hex << uppercase << subkey.to_ullong() << endl;//test
+
+        bitset<48> first_xor = expanded ^ subkey;
+        // cout << "first_xor: " << first_xor << endl;//test
+        
+        bitset<32> substituted = Sbox(first_xor);
+        // cout << "Sbox: " << substituted << endl;//test
+
+        bitset<32> permuted = strightPbox(substituted);
+        // cout << "Permutation: " << permuted << endl;//test
+
+        right = left ^ permuted;
+        left = temp;
+        // cout << hex << uppercase << left.to_ullong() << " " << right.to_ullong() << endl;//test
+    }
+
+    bitset<64> swapped;
+    for(int i = 0 ; i < 32 ; i++) swapped[i] = left[i];
+    for(int i = 0 ; i < 32 ; i++) swapped[i + 32] = right[i];
+    // cout << "swap: " << swapped << endl;//test
+
+    bitset<64> plaintext;
+    for(int i = 0 ; i < 64 ; i++){
+        plaintext[63 - i] = swapped[64 - final_permutation[i]];//
+    }
+    return plaintext;
 }
 
 string stob(string s){
@@ -260,18 +308,18 @@ int main(){
     freopen("out.txt", "w", stdout);
 
     string input_str;
-    for(int i = 0 ; i < 5 ; i++){
-        getline(cin, input_str, ' ');
-        bitset<64> key(stob(input_str));
-        // bitset<64> key(htob(input_str));//hex input
+    while(getline(cin, input_str, ' ')){
+        // bitset<64> key(stob(input_str));
+        bitset<64> key(htob(input_str));//hex input
         getline(cin, input_str);
-        bitset<64> plaintext(stob(input_str));
-        // bitset<64> plaintext(htob(input_str));//hex input
+        // bitset<64> plaintext(stob(input_str));
+        bitset<64> plaintext(htob(input_str));//hex input
 
         bitset<64> ciphertext = desEncrypt(plaintext, key);
+        bitset<64> decode = desDecrypt(ciphertext, key);
 
-        cout << hex << uppercase << setw(16) << setfill('0') << ciphertext.to_ullong();
-        if(i < 4) cout << endl;
+        cout << hex << uppercase << setw(16) << setfill('0') << ciphertext.to_ullong() << endl;
+        cout << hex << uppercase << setw(16) << setfill('0') << decode.to_ullong();
     }
 
     return 0;
