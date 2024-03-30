@@ -11,12 +11,10 @@ def signal_1(n):
         return 0
 
 def signal_2(n):
-    if n < 1:
-        return 0
-    elif n == 1:
+    if 1 <= n <= 10:
         return 1
     else:
-        return signal_2(n-1) - signal_2(n-11)
+        return 0
 
 # (a) Plot signals
 n_values = np.arange(1, 40)
